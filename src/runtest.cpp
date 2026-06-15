@@ -133,6 +133,7 @@ int main(int argc, char *argv[])
     int numofmoves = 0;
     bool caught = false;
     int pathcost = 0;
+    int lookAhead = 1;
 
     std::string outputDir = OUTPUT_DIR;
     std::string outputFilePath = outputDir + "/robot_trajectory.txt";
@@ -158,7 +159,8 @@ int main(int argc, char *argv[])
                                        targetposeX,
                                        targetposeY,
                                        curr_time,
-                                       action_ptr);
+                                       action_ptr,
+                                       lookAhead);
         newrobotposeX = action_ptr[0];
         newrobotposeY = action_ptr[1];
 
@@ -182,6 +184,7 @@ int main(int argc, char *argv[])
         
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+        std::cout << "move duration was: " << duration << std::endl;
 
         int movetime = std::max(1, (int)std::ceil(duration));
 
@@ -219,8 +222,8 @@ int main(int argc, char *argv[])
     std::cout << "moves made = " << numofmoves << std::endl;
     std::cout << "path cost = " << pathcost << std::endl;
 
-    delete target_traj;
-    delete map;
+    delete[] target_traj;
+    delete[] map;
 
     return 0;
 }

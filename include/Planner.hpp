@@ -1,7 +1,6 @@
 #ifndef PLANNER_HPP
 #define PLANNER_HPP
 
-#include <allocator>
 #include <vector>
 #include <queue>
 #include <limits>
@@ -13,7 +12,8 @@ public:
                         int targetposeX,
                         int targetposeY,
                         int curr_time,
-                        int* action_ptr);
+                        int* action_ptr,
+                        int lookAhead = 0);
 private:
     struct Coord{
         int x{};
@@ -69,5 +69,7 @@ private:
     bool nodeCostCheck(const Coord& position);
     Node& getNodeFromCoord(const Coord& position);
     Coord returnBestNextStep(const Node& start, const Node& goal);
+    Coord computeGoalCoordinate(int curr_time, int lookAhead);
+    void resetSearch();
 };
 #endif // PLANNER_HPP
